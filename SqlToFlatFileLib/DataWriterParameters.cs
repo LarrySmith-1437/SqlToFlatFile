@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Odbc;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Runtime.Remoting.Channels;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -15,7 +17,8 @@ namespace SqlToFlatFileLib
         public string OutputFilePath { get; set; }
         public bool WriteColNamesAsHeader { get; set; }
         public string Delimiter { get; set; }
-        public string TextEnclosure { get; set; }
+        public string TextEnclosure { get; set; }    
+        public DatabaseType DatabaseType { get; set; }
 
         public void LogParameters(Logging.IAppLogger appLogger)
         {
@@ -23,8 +26,19 @@ namespace SqlToFlatFileLib
             appLogger.Debug($"InlineQuery= {InlineQuery}");
             appLogger.Debug($"Output File Path= {OutputFilePath}");
             appLogger.Debug($"Delimiter= {Delimiter}");
-            var builder = new SqlConnectionStringBuilder(ConnectionString);
-            var partialConnectionString = $"DataSource={builder.DataSource};InitialCatalog={builder.InitialCatalog}";
+
+            string partialConnectionString = "";
+            var sections = ConnectionString.Split(';');
+                     
+            foreach (var section in sections)
+            {
+                if (section.ToLower().StartsWith("pwd") || section.ToLower().StartsWith("password"))
+                {
+                    continue;
+                }
+                partialConnectionString += section + ";";
+            }
+
             appLogger.Debug($"Partial Connection String= {partialConnectionString}");
         }
 

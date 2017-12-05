@@ -54,6 +54,8 @@
     <Content Include="ReturnAllCommonDataTypesQuery.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Compile Include="TestWriteFileOleDb.cs" />
+    <Compile Include="TestWriteFileOdbc.cs" />
     <Compile Include="TestWriteFile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
