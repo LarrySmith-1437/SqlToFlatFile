@@ -23,7 +23,7 @@ namespace TestSqlToFlatFile
             var writerParams = new DataWriterParameters
             {
                 ConnectionString = _connectionString,
-                DatabaseType = DatabaseType.OleDB,
+                DatabaseType = DatabaseType.OleDb,
                 QueryFile = "ReturnAllCommonDataTypesQuery.sql",
                 OutputFilePath = outputFile,
                 Delimiter = "|"
@@ -51,7 +51,7 @@ namespace TestSqlToFlatFile
             var writerParams = new DataWriterParameters
             {
                 ConnectionString = _connectionString,
-                DatabaseType = DatabaseType.OleDB,
+                DatabaseType = DatabaseType.OleDb,
                 QueryFile = "ReturnAllCommonDataTypesQuery.sql",
                 OutputFilePath = outputFile,
                 //DateSuffixFormat = "yyyyMMdd",
@@ -84,7 +84,7 @@ namespace TestSqlToFlatFile
             var writerParams = new DataWriterParameters
             {
                 ConnectionString = _connectionString,
-                DatabaseType = DatabaseType.OleDB,
+                DatabaseType = DatabaseType.OleDb,
                 QueryFile = "ReturnAllCommonDataTypesQuery.sql",
                 OutputFilePath = outputFile,
                 //DateSuffixFormat = "yyyyMMdd",
@@ -119,7 +119,7 @@ namespace TestSqlToFlatFile
             var writerParams = new DataWriterParameters
             {
                 ConnectionString = _connectionString,
-                DatabaseType = DatabaseType.OleDB,
+                DatabaseType = DatabaseType.OleDb,
                 InlineQuery = "select 1 where 1 = 2",
                 OutputFilePath = outputFile,
                 Delimiter = "\t"
@@ -152,7 +152,7 @@ namespace TestSqlToFlatFile
             var writerParams = new DataWriterParameters
             {
                 ConnectionString = _connectionString,
-                DatabaseType = DatabaseType.OleDB,
+                DatabaseType = DatabaseType.OleDb,
                 QueryFile = "ReturnAllCommonDataTypesQuery.sql",
                 OutputFilePath = outputFile,
                 Delimiter = ",",

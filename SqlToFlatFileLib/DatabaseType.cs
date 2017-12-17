@@ -9,7 +9,7 @@ namespace SqlToFlatFileLib
     public enum DatabaseType
     {
         SqlServer = 0,
-        OleDB = 1,
+        OleDb = 1,
         Odbc = 2
     }
 }

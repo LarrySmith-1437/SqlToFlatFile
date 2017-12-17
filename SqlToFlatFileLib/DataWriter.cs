@@ -46,7 +46,7 @@ namespace SqlToFlatFileLib
                     return new SqlConnection(_writerParams.ConnectionString);
                 case DatabaseType.Odbc:
                     return new OdbcConnection(_writerParams.ConnectionString);
-                case DatabaseType.OleDB:
+                case DatabaseType.OleDb:
                     return new OleDbConnection(_writerParams.ConnectionString);
                 default:
                     throw new ApplicationException("Incorrect database type");

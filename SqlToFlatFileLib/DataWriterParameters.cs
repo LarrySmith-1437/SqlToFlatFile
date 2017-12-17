@@ -26,6 +26,7 @@ namespace SqlToFlatFileLib
             appLogger.Debug($"InlineQuery= {InlineQuery}");
             appLogger.Debug($"Output File Path= {OutputFilePath}");
             appLogger.Debug($"Delimiter= {Delimiter}");
+            appLogger.Debug($"DatabaseType= {DatabaseType.ToString()}");
 
             string partialConnectionString = "";
             var sections = ConnectionString.Split(';');
