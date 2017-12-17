@@ -152,7 +152,8 @@ namespace SqlToFlatFileLib
             string contents = "";
             if (!reader.IsDBNull(i))
             {
-                switch (reader.GetDataTypeName(i).ToLower())
+                var dataTypeName = reader.GetDataTypeName(i).ToLower();
+                switch (dataTypeName)
                 {
                     case "dbtype_dbtimestamp":
                     case "datetime":
@@ -190,6 +191,12 @@ namespace SqlToFlatFileLib
                     case "dbtype_r8":
                         contents = reader.GetDouble(i).ToString(CultureInfo.InvariantCulture);
                         break;
+                    case "dbtype_varbinary":
+                    case "dbtype_binary":
+                    case "varbinary":
+                    case "binary":
+                        contents = "0x" +  BitConverter.ToString((byte[])reader[i]).Replace("-","");
+                        break;
                     default:
                         contents = $"{_writerParams.TextEnclosure}{reader[i].ToString()}{_writerParams.TextEnclosure}";
                         break;
@@ -198,7 +205,7 @@ namespace SqlToFlatFileLib
             return contents;
         }
 
-        private string GetQuery()
+        public string GetQuery()
         {
             if (!String.IsNullOrEmpty(_writerParams.InlineQuery))
                 return _writerParams.InlineQuery;

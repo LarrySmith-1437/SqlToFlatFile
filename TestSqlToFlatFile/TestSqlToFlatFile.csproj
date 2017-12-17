@@ -47,13 +47,16 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="OleDbReadDataTypes.cs" />
     <Compile Include="TestDataWriterParameters.cs" />
     <Compile Include="TestDateContentRenderer.cs" />
     <Content Include="ReturnAllCommonDataTypesQuery.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Compile Include="OdbcReadDataTypes.cs" />
     <Compile Include="TestWriteFileOleDb.cs" />
     <Compile Include="TestWriteFileOdbc.cs" />
     <Compile Include="TestWriteFile.cs" />

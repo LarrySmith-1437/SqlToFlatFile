@@ -1,5 +1,7 @@
 ﻿select 
-     DateTimeType = CAST('2017-06-01 13:55:05.223' as datetime) 
+	 VarBinaryData =  0xD192EA67 
+	,BinaryData =  cast(0xD192EA67 as binary(5))
+    ,DateTimeType = CAST('2017-06-01 13:55:05.223' as datetime) 
 	,DateType = cast('2017-06-15' as date)
     ,CharacterType = 'Testing CharacterType'
     ,NCharacterType = N'Testing CharacterType'	
@@ -11,7 +13,9 @@
     ,SmallIntType = CAST(12 as smallint)
 union 
 select 
-     DateTimeType = CAST('2017-06-01 13:55:05.223' as datetime) 
+	 VarBinaryData =  0x3DA2F87A7B
+	,BinaryData = cast(0x3DA2F87A7B as binary(5))
+    ,DateTimeType = CAST('2017-06-01 13:55:05.223' as datetime) 
 	,DateType = cast('2017-06-15' as date)
     ,CharacterType = 'Testing CharacterType 2'
     ,NCharacterType = N'Testing CharacterType 2'	
