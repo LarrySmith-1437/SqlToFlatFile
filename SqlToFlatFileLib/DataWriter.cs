@@ -78,16 +78,13 @@ namespace SqlToFlatFileLib
                         File.Delete(filename);
 
                         StreamWriter fileWriter = null;
-                        
+
+                        fileWriter = InitializeFile(filename);
+                        WriteFileHeader(reader, fileWriter);
+
                         int recordCounter = 0;
                         while (reader.Read())
                         {
-                            if (recordCounter == 0)
-                            {
-                                fileWriter = InitializeFile(filename);
-                                WriteFileHeader(reader, fileWriter);
-                            }
-
                             recordCounter++;
                             for (int i = 0; i < reader.FieldCount; i++)
                             {
@@ -95,13 +92,13 @@ namespace SqlToFlatFileLib
                             }
                             WriteValue(fileWriter, Environment.NewLine, false);
                         }
+                        fileWriter?.Dispose();
 
                         if (recordCounter == 0)
                         {
-                            AbortFileWrite(filename);
+                            _appLogger.Info("No records were returned.");
                             return;
                         }
-                        fileWriter?.Dispose();
                         _appLogger.Info($"{recordCounter} records written.");
                     }
                 }
@@ -111,12 +108,6 @@ namespace SqlToFlatFileLib
                 _appLogger.Error("File Writing failed due to exception. ", ex);
                 throw;
             }
-        }
-
-        private void AbortFileWrite(string filename)
-        {
-            File.Delete(filename);
-            _appLogger.Info("No records were returned, aborting file write.");
         }
 
         private void WriteFileHeader(IDataReader reader, StreamWriter fileWriter)

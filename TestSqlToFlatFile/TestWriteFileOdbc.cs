@@ -112,7 +112,7 @@ namespace TestSqlToFlatFile
         }
 
         [TestMethod]
-        public void OdbcTestWriterWithNoDataShouldNotOutputAFile()
+        public void OdbcTestWriterWithNoDataShouldStillOutputAFile()
         {
             var outputFile = "nofile{currentdatetime:format=yyyyMMdd}Odbc.txt";
             var outputFileIntended = "nofile" + DateTime.Now.ToString("yyyyMMdd") + "Odbc.txt";
@@ -138,7 +138,7 @@ namespace TestSqlToFlatFile
 
             var outputFileInfo = new FileInfo(dataWriter.CalculatedOutputFilePath);
 
-            Assert.IsFalse(outputFileInfo.Exists);
+            Assert.IsTrue(outputFileInfo.Exists);
         }
 
         [TestMethod]

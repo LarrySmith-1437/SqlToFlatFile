@@ -111,7 +111,7 @@ namespace TestSqlToFlatFile
         }
 
         [TestMethod]
-        public void OleDbTestWriterWithNoDataShouldNotOutputAFile()
+        public void OleDbTestWriterWithNoDataShouldStillOutputAFile()
         {
             var outputFile = "nofile{currentdatetime:format=yyyyMMdd}OleDb.txt";
             var outputFileIntended = "nofile" + DateTime.Now.ToString("yyyyMMdd") + "OleDb.txt";
@@ -137,7 +137,7 @@ namespace TestSqlToFlatFile
 
             var outputFileInfo = new FileInfo(dataWriter.CalculatedOutputFilePath);
 
-            Assert.IsFalse(outputFileInfo.Exists);
+            Assert.IsTrue(outputFileInfo.Exists);
         }
 
         [TestMethod]

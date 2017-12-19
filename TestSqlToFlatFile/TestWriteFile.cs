@@ -105,7 +105,7 @@ namespace TestSqlToFlatFile
         }
 
         [TestMethod]
-        public void TestWriterWithNoDataShouldNotOutputAFile()
+        public void TestWriterWithNoDataShouldStillOutputAFile()
         {
             var outputFile = "nofile{currentdatetime:format=yyyyMMdd}.txt";
             var outputFileIntended = "nofile" + DateTime.Now.ToString("yyyyMMdd") + ".txt";
@@ -113,8 +113,9 @@ namespace TestSqlToFlatFile
             var writerParams = new DataWriterParameters
             {
                 ConnectionString = @"Server=(localdb)\Projectsv13;Database=master;Trusted_Connection=True;",
-                InlineQuery = "select 1 where 1 = 2",
+                InlineQuery = "select col1 = 1 where 1 = 2",
                 OutputFilePath = outputFile,
+                WriteColNamesAsHeader = true,
                 Delimiter = "\t"
             };
 
@@ -130,7 +131,8 @@ namespace TestSqlToFlatFile
 
             var outputFileInfo = new FileInfo(dataWriter.CalculatedOutputFilePath);
 
-            Assert.IsFalse(outputFileInfo.Exists);
+            Assert.IsTrue(outputFileInfo.Exists);
+            Assert.AreEqual("col1\r\n", File.ReadAllText(outputFileInfo.FullName));
         }
 
         [TestMethod]
