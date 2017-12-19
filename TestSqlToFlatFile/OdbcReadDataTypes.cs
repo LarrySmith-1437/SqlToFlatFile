@@ -59,13 +59,13 @@ namespace TestSqlToFlatFile
         [TestMethod]
         public void OdbcDatatype_Binary()
         {
-            var value = _dataWriter.ReadDataTypes(_reader, _reader.GetOrdinal("BinaryData"));
+            var value = _dataWriter.ReadData(_reader, _reader.GetOrdinal("BinaryData"));
             Assert.AreEqual("0xD192EA6700", value);
         }
         [TestMethod]
         public void OledbDatatype_VarBinary()
         {
-            var value = _dataWriter.ReadDataTypes(_reader, _reader.GetOrdinal("VarBinaryData"));
+            var value = _dataWriter.ReadData(_reader, _reader.GetOrdinal("VarBinaryData"));
             Assert.AreEqual("0xD192EA67", value);
         }
 

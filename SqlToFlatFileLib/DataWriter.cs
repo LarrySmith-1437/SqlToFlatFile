@@ -88,7 +88,7 @@ namespace SqlToFlatFileLib
                             recordCounter++;
                             for (int i = 0; i < reader.FieldCount; i++)
                             {
-                                WriteValue(fileWriter, ReadDataTypes(reader, i), i > 0);
+                                WriteValue(fileWriter, ReadData(reader, i), i > 0);
                             }
                             WriteValue(fileWriter, Environment.NewLine, false);
                         }
@@ -138,64 +138,16 @@ namespace SqlToFlatFileLib
             }
         }
 
-        public string ReadDataTypes(IDataReader reader, int i)
+        public string ReadData(IDataReader reader, int zeroBasedColumnNumber)
         {
-            string contents = "";
-            if (!reader.IsDBNull(i))
-            {
-                var dataTypeName = reader.GetDataTypeName(i).ToLower();
-                switch (dataTypeName)
-                {
-                    case "dbtype_dbtimestamp":
-                    case "datetime":
-                        contents = reader.GetDateTime(i).ToString("G");
-                        break;
-                    case "dbtype_dbdate":
-                    case "date":
-                        contents = reader.GetDateTime(i).ToString("d");
-                        break;
-                    case "dbtype_i4":
-                    case "int":
-                        contents = reader.GetInt32(i).ToString();
-                        break;
-                    case "dbtype_numeric":
-                    case "dbtype_decimal":
-                    case "decimal":
-                    case "numeric":
-                        contents = reader.GetDecimal(i).ToString(CultureInfo.InvariantCulture);
-                        break;
-                    case "dbtype_bool":
-                    case "bit":
-                        contents = reader.GetBoolean(i) ? "True" : "False";
-                        break;
-                    case "tinyint":
-                        contents = reader.GetByte(i).ToString();
-                        break;
-                    case "bigint":
-                    case "dbtype_i8":
-                        contents = reader.GetInt64(i).ToString();
-                        break;
-                    case "dbtype_i2":
-                    case "smallint":
-                        contents = reader.GetInt16(i).ToString();
-                        break;
-                    case "dbtype_r8":
-                        contents = reader.GetDouble(i).ToString(CultureInfo.InvariantCulture);
-                        break;
-                    case "dbtype_varbinary":
-                    case "dbtype_binary":
-                    case "varbinary":
-                    case "binary":
-                        contents = "0x" +  BitConverter.ToString((byte[])reader[i]).Replace("-","");
-                        break;
-                    default:
-                        contents = $"{_writerParams.TextEnclosure}{reader[i].ToString()}{_writerParams.TextEnclosure}";
-                        break;
-                }
-            }
-            return contents;
+            return DatabaseColumnContentFormatter.ReadColumnData(reader, zeroBasedColumnNumber,
+                _writerParams.TextEnclosure);
         }
 
+        /// <summary>
+        /// If InlineQuery is set, returns the inline query, else attempts to read query from QueryFile.
+        /// </summary>
+        /// <returns>query text</returns>
         public string GetQuery()
         {
             if (!String.IsNullOrEmpty(_writerParams.InlineQuery))
