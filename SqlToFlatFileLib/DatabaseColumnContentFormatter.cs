@@ -20,11 +20,11 @@ namespace SqlToFlatFileLib
                 {
                     case "dbtype_dbtimestamp":
                     case "datetime":
-                        contents = reader.GetDateTime(zeroBasedColumnNumber).ToString("G");
+                        contents = reader.GetDateTime(zeroBasedColumnNumber).ToString("yyyy-MM-dd HH:mm:ss.fff");
                         break;
                     case "dbtype_dbdate":
                     case "date":
-                        contents = reader.GetDateTime(zeroBasedColumnNumber).ToString("d");
+                        contents = reader.GetDateTime(zeroBasedColumnNumber).ToString("yyyy-MM-dd");
                         break;
                     case "dbtype_i4":
                     case "int":
