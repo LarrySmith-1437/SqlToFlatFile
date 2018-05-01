@@ -8,6 +8,9 @@ namespace TestSqlToFlatFile
     [TestClass]
     public class TestWriteFile
     {
+        private string _connectionString =
+            @"Server=(localdb)\Projectsv13;Database=master;Trusted_Connection=True;";
+
         [TestMethod]
         public void TestWriter()
         {
@@ -19,7 +22,7 @@ namespace TestSqlToFlatFile
 
             var writerParams = new DataWriterParameters
             {
-                ConnectionString = @"Server=(localdb)\Projectsv13;Database=master;Trusted_Connection=True;",
+                ConnectionString = _connectionString,
                 QueryFile = "ReturnAllCommonDataTypesQuery.sql",
                 OutputFilePath = outputFile,
                 Delimiter = "|"
@@ -46,7 +49,7 @@ namespace TestSqlToFlatFile
 
             var writerParams = new DataWriterParameters
             {
-                ConnectionString = @"Server=(localdb)\Projectsv13;Database=master;Trusted_Connection=True;",
+                ConnectionString = _connectionString,
                 QueryFile = "ReturnAllCommonDataTypesQuery.sql",
                 OutputFilePath = outputFile,
                 //DateSuffixFormat = "yyyyMMdd",
@@ -78,7 +81,7 @@ namespace TestSqlToFlatFile
 
             var writerParams = new DataWriterParameters
             {
-                ConnectionString = @"Server=(localdb)\Projectsv13;Database=master;Trusted_Connection=True;",
+                ConnectionString = _connectionString,
                 QueryFile = "ReturnAllCommonDataTypesQuery.sql",
                 OutputFilePath = outputFile,
                 //DateSuffixFormat = "yyyyMMdd",
@@ -112,7 +115,7 @@ namespace TestSqlToFlatFile
 
             var writerParams = new DataWriterParameters
             {
-                ConnectionString = @"Server=(localdb)\Projectsv13;Database=master;Trusted_Connection=True;",
+                ConnectionString = _connectionString,
                 InlineQuery = "select col1 = 1 where 1 = 2",
                 OutputFilePath = outputFile,
                 WriteColNamesAsHeader = true,
@@ -146,7 +149,7 @@ namespace TestSqlToFlatFile
 
             var writerParams = new DataWriterParameters
             {
-                ConnectionString = @"Server=(localdb)\Projectsv13;Database=master;Trusted_Connection=True;",
+                ConnectionString = _connectionString,
                 QueryFile = "ReturnAllCommonDataTypesQuery.sql",
                 OutputFilePath = outputFile,
                 Delimiter = ",",
