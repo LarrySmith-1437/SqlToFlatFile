@@ -44,7 +44,7 @@ namespace SqlToFlatFile
                     WriteColNamesAsHeader = parsedOptions.Header
                 };
 
-                var dataWriter = new DataWriter(writerParams);
+                var dataWriter = new DataWriter(logger, writerParams);
 
                 dataWriter.Write();
             }

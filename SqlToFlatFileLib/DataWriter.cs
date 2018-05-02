@@ -13,9 +13,9 @@ using SqlToFlatFileLib.Logging;
 
 namespace SqlToFlatFileLib
 {
-    public class DataWriter
+    public class DataWriter : IDataWriter
     {
-        private IAppLogger _appLogger;
+        private IAppLogger _logger;
 
         private DataWriterParameters _writerParams;
 
@@ -27,13 +27,13 @@ namespace SqlToFlatFileLib
             }
         }
 
-        public DataWriter()
+        public DataWriter(IAppLogger logger)
         {
-            _appLogger = DefaultLogger.Instance;
+            _logger = logger;
         }
 
-        public DataWriter(DataWriterParameters writerParameters )
-            : this()
+        public DataWriter(IAppLogger logger, DataWriterParameters writerParameters )
+            : this(logger)
         {
             _writerParams = writerParameters;
         }
@@ -57,9 +57,9 @@ namespace SqlToFlatFileLib
         {
             try
             {
-                _appLogger.Info("begin SqlToFlatFileLib.DataWriter.Write operation");
+                _logger.Info("begin SqlToFlatFileLib.DataWriter.Write operation");
 
-                _writerParams.LogParameters(_appLogger);
+                _writerParams.LogParameters(_logger);
 
                 using (var conn = GetDbConnectionForDatabaseType())
                 {
@@ -74,7 +74,7 @@ namespace SqlToFlatFileLib
 
                         var filename = CalculatedOutputFilePath;
 
-                        _appLogger.Info($"File to be written to: {filename}");
+                        _logger.Info($"File to be written to: {filename}");
                         File.Delete(filename);
 
                         StreamWriter fileWriter = null;
@@ -96,21 +96,21 @@ namespace SqlToFlatFileLib
 
                         if (recordCounter == 0)
                         {
-                            _appLogger.Info("No records were returned.");
+                            _logger.Info("No records were returned.");
                             return;
                         }
-                        _appLogger.Info($"{recordCounter} records written.");
+                        _logger.Info($"{recordCounter} records written.");
                     }
                 }
             }
             catch (Exception ex)
             {
-                _appLogger.Error("File Writing failed due to exception. ", ex);
+                _logger.Error("File Writing failed due to exception. ", ex);
                 throw;
             }
         }
 
-        private void WriteFileHeader(IDataReader reader, StreamWriter fileWriter)
+        public void WriteFileHeader(IDataReader reader, StreamWriter fileWriter)
         {
             if (_writerParams.WriteColNamesAsHeader)
             {

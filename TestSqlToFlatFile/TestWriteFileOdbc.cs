@@ -2,6 +2,7 @@
 using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SqlToFlatFileLib;
+using SqlToFlatFileLib.Logging;
 
 namespace TestSqlToFlatFile
 {
@@ -11,6 +12,7 @@ namespace TestSqlToFlatFile
         private string _connectionString =
         //@"Provider=MSDASQL;Driver={Sql Server Native Client 11.0};Server=(localdb)\Projectsv13;Database=master;uid=TestOdbc;pwd=TestOdbc;";
         @"Provider=MSDASQL;Driver={Sql Server Native Client 11.0};Server=(localdb)\Projectsv13;Database=master;Trusted_Connection=yes;";
+        private static IAppLogger _logger = DefaultLogger.Instance;
 
         [TestMethod]
         public void OdbcTestWriter()
@@ -30,7 +32,7 @@ namespace TestSqlToFlatFile
                 Delimiter = "|"
             };
 
-            var dataWriter = new DataWriter(writerParams);
+            var dataWriter = new DataWriter(_logger, writerParams);
             dataWriter.Write();
 
             var execDir = System.IO.Path.GetDirectoryName(new System.Uri(System.Reflection.Assembly.GetExecutingAssembly().CodeBase).LocalPath);
@@ -59,7 +61,7 @@ namespace TestSqlToFlatFile
                 Delimiter = ","
             };
 
-            var dataWriter = new DataWriter(writerParams);
+            var dataWriter = new DataWriter(_logger, writerParams);
 
             Assert.AreEqual(outputFileIntended,Path.GetFileName(dataWriter.CalculatedOutputFilePath));
 
@@ -94,7 +96,7 @@ namespace TestSqlToFlatFile
 
 
 
-            var dataWriter = new DataWriter(writerParams);
+            var dataWriter = new DataWriter(_logger, writerParams);
 
             Assert.AreEqual(outputFileIntended, Path.GetFileName(dataWriter.CalculatedOutputFilePath));
 
@@ -126,7 +128,7 @@ namespace TestSqlToFlatFile
                 Delimiter = "\t"
             };
 
-            var dataWriter = new DataWriter(writerParams);
+            var dataWriter = new DataWriter(_logger, writerParams);
             Assert.AreEqual(outputFileIntended, Path.GetFileName(dataWriter.CalculatedOutputFilePath));
 
             if (File.Exists(dataWriter.CalculatedOutputFilePath))
@@ -161,7 +163,7 @@ namespace TestSqlToFlatFile
                 TextEnclosure = "'"
             };
 
-            var dataWriter = new DataWriter(writerParams);
+            var dataWriter = new DataWriter(_logger, writerParams);
             dataWriter.Write();
 
             var outputFileInfo = new FileInfo(outputFile);

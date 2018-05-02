@@ -3,6 +3,7 @@ using System.Data;
 using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SqlToFlatFileLib;
+using SqlToFlatFileLib.Logging;
 
 namespace TestSqlToFlatFile
 {
@@ -15,6 +16,7 @@ namespace TestSqlToFlatFile
         private static IDataReader _reader;
         private static DataWriter _dataWriter;
         private static IDbConnection _conn;
+        private static IAppLogger _logger = DefaultLogger.Instance;
 
 
         [ClassInitialize]
@@ -31,7 +33,8 @@ namespace TestSqlToFlatFile
                 WriteColNamesAsHeader = true,
                 TextEnclosure = "'"
             };
-            _dataWriter = new DataWriter(writerParams);
+
+            _dataWriter = new DataWriter(_logger, writerParams);
 
             _conn = _dataWriter.GetDbConnectionForDatabaseType();
             _conn.Open();
