@@ -70,5 +70,12 @@ namespace TestSqlToFlatFile
             var value = _dataWriter.ReadData(_reader, _reader.GetOrdinal("VarBinaryData"));
             Assert.AreEqual("0xD192EA67", value);
         }
+        [TestMethod]
+        public void OledbDatatype_CharacterWithEmbeddedDelimiter()
+        {
+            var value = _dataWriter.ReadData(_reader, _reader.GetOrdinal("CharacterTypeWithEmbeddedDeliter"));
+            Assert.AreEqual("'Testing '' CharacterType with embedded double quote'", value);
+        }
+
     }
 }

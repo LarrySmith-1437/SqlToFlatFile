@@ -28,9 +28,13 @@ namespace SqlToFlatFileLib.Tests
         public void ReadColumnDataTest()
         {
             var query = @"
+select *
+from
+(
 select 
     DateTimeType = CAST('2017-06-01 13:55:05.223' as datetime) 
 	,DateType = cast('2017-06-15' as date)
+)sub
 ";
 
             using (var conn = new OdbcConnection(_connectionString))

@@ -61,7 +61,12 @@ namespace SqlToFlatFileLib
                         contents = "0x" + BitConverter.ToString((byte[])reader[zeroBasedColumnNumber]).Replace("-", "");
                         break;
                     default:
-                        contents = $"{textEnclosure}{reader[zeroBasedColumnNumber].ToString()}{textEnclosure}";
+                        if (string.IsNullOrEmpty(textEnclosure))
+                            contents = reader[zeroBasedColumnNumber].ToString();
+                        else
+                            contents =
+                                $"{textEnclosure}{reader[zeroBasedColumnNumber].ToString().Replace(textEnclosure, textEnclosure + textEnclosure)}{textEnclosure}";
+
                         break;
                 }
             }

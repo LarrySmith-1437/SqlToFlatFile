@@ -3,8 +3,8 @@
   <PropertyGroup>
     <TargetFramework>net462</TargetFramework>
     <AssemblyName>SqlToFlatFileLib</AssemblyName>
-    <AssemblyVersion>1.0.0.0</AssemblyVersion>
-    <Version>1.0.0</Version>
+    <AssemblyVersion>1.0.3.0</AssemblyVersion>
+    <Version>1.0.3</Version>
     <AssemblyTitle>SqlToFlatFileLib</AssemblyTitle>
     <Description>Dump any data source (ODBC, OleDB, Sql Native) to a delimited file.</Description>
     <Copyright>2018</Copyright>
@@ -12,6 +12,8 @@
     <RepositoryUrl>https://github.com/LarrySmith-1437/SqlToFlatFile</RepositoryUrl>
     <RepositoryType>Github</RepositoryType>
     <PackageTags>Export Flat File</PackageTags>
+    <Authors>Lawrence M. Smith</Authors>
+    <PackageReleaseNotes>Enhanced text enclosure logic: If the contents that are enclosed contain the enclosure character itself, it will be escaped by repeating it twice.  Typical delimited text processors then understand that the double-up enclosure character is actually an escaped embedded text enclosure character.</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>

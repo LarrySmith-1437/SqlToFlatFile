@@ -4,6 +4,7 @@
     ,DateTimeType = CAST('2017-06-01 13:55:05.223' as datetime) 
 	,DateType = cast('2017-06-15' as date)
     ,CharacterType = 'Testing CharacterType'
+    ,CharacterTypeWithEmbeddedDeliter = 'Testing '' CharacterType with embedded double quote'
     ,NCharacterType = N'Testing CharacterType'	
     ,IntType = 5
     ,DecimalType = 5.5
@@ -18,6 +19,7 @@ select
     ,DateTimeType = CAST('2017-06-01 13:55:05.223' as datetime) 
 	,DateType = cast('2017-06-15' as date)
     ,CharacterType = 'Testing CharacterType 2'
+    ,CharacterTypeWithEmbeddedDeliter = 'Testing '' CharacterType with embedded double quote'
     ,NCharacterType = N'Testing CharacterType 2'	
     ,IntType = 10
     ,DecimalType = 10.10
