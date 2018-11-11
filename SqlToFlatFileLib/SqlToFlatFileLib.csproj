@@ -1,10 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net462</TargetFramework>
+    <TargetFramework>net452</TargetFramework>
     <AssemblyName>SqlToFlatFileLib</AssemblyName>
-    <AssemblyVersion>1.0.3.0</AssemblyVersion>
-    <Version>1.0.3</Version>
+    <AssemblyVersion>1.0.4.0</AssemblyVersion>
+    <Version>1.0.4</Version>
     <AssemblyTitle>SqlToFlatFileLib</AssemblyTitle>
     <Description>Dump any data source (ODBC, OleDB, Sql Native) to a delimited file.</Description>
     <Copyright>2018</Copyright>
@@ -13,7 +13,7 @@
     <RepositoryType>Github</RepositoryType>
     <PackageTags>Export Flat File</PackageTags>
     <Authors>Lawrence M. Smith</Authors>
-    <PackageReleaseNotes>Enhanced text enclosure logic: If the contents that are enclosed contain the enclosure character itself, it will be escaped by repeating it twice.  Typical delimited text processors then understand that the double-up enclosure character is actually an escaped embedded text enclosure character.</PackageReleaseNotes>
+    <PackageReleaseNotes>Downgraded the .net build target to 4.5.2 (from 4.6.2) to allow lower frameworks to be able to use it.</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
