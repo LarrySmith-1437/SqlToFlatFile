@@ -7,7 +7,7 @@ using SqlToFlatFileLib.Logging;
 namespace TestSqlToFlatFile
 {
     [TestClass]
-    public class TestWriteFile
+    public class TestWriteFileSqlServer
     {
         private string _connectionString =
             @"Server=(localdb)\Projectsv13;Database=master;Trusted_Connection=True;";
@@ -27,13 +27,12 @@ namespace TestSqlToFlatFile
                 ConnectionString = _connectionString,
                 QueryFile = "ReturnAllCommonDataTypesQuery.sql",
                 OutputFilePath = outputFile,
-                Delimiter = "|"
+                Delimiter = "|",
+                DatabaseType = DatabaseType.SqlServer
             };
 
             var dataWriter = new DataWriter(_logger, writerParams);
             dataWriter.Write();
-
-            var execDir = System.IO.Path.GetDirectoryName(new System.Uri(System.Reflection.Assembly.GetExecutingAssembly().CodeBase).LocalPath);
 
             var outputFileInfo = new FileInfo(outputFile);
 
@@ -55,7 +54,9 @@ namespace TestSqlToFlatFile
                 QueryFile = "ReturnAllCommonDataTypesQuery.sql",
                 OutputFilePath = outputFile,
                 //DateSuffixFormat = "yyyyMMdd",
-                Delimiter = ","
+                Delimiter = ",",
+                DatabaseType = DatabaseType.SqlServer
+
             };
 
             var dataWriter = new DataWriter(_logger, writerParams);
@@ -86,8 +87,8 @@ namespace TestSqlToFlatFile
                 ConnectionString = _connectionString,
                 QueryFile = "ReturnAllCommonDataTypesQuery.sql",
                 OutputFilePath = outputFile,
-                //DateSuffixFormat = "yyyyMMdd",
-                Delimiter = "\t"
+                Delimiter = "\t",
+                DatabaseType = DatabaseType.SqlServer
             };
 
 
@@ -121,7 +122,8 @@ namespace TestSqlToFlatFile
                 InlineQuery = "select col1 = 1 where 1 = 2",
                 OutputFilePath = outputFile,
                 WriteColNamesAsHeader = true,
-                Delimiter = "\t"
+                Delimiter = "\t",
+                DatabaseType = DatabaseType.SqlServer
             };
 
             var dataWriter = new DataWriter(_logger, writerParams);
@@ -156,7 +158,8 @@ namespace TestSqlToFlatFile
                 OutputFilePath = outputFile,
                 Delimiter = ",",
                 WriteColNamesAsHeader = true,
-                TextEnclosure = "'"
+                TextEnclosure = "'",
+                DatabaseType = DatabaseType.SqlServer
             };
 
             var dataWriter = new DataWriter(_logger, writerParams);
@@ -168,5 +171,36 @@ namespace TestSqlToFlatFile
             Assert.IsTrue(outputFileInfo.Length > 10);
 
         }
+
+        [TestMethod]
+        public void TestQueryThatGeneratesError()
+        {
+            var outputFile = "testErrorQuery.csv";
+            if (File.Exists(outputFile))
+            {
+                File.Delete(outputFile);
+            }
+
+            var writerParams = new DataWriterParameters
+            {
+                ConnectionString = _connectionString,
+                InlineQuery = "Select firstcol = 1/0",
+                OutputFilePath = outputFile,
+                Delimiter = ",",
+                WriteColNamesAsHeader = true,
+                TextEnclosure = "'",
+                DatabaseType = DatabaseType.SqlServer
+            };
+
+            var dataWriter = new DataWriter(_logger, writerParams);
+            dataWriter.Write();
+
+            var outputFileInfo = new FileInfo(outputFile);
+
+            Assert.IsTrue(outputFileInfo.Exists);
+            Assert.IsTrue(outputFileInfo.Length > 5);
+
+        }
+
     }
 }

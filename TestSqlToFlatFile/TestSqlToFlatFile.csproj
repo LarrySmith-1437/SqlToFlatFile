@@ -60,7 +60,7 @@
     <Compile Include="OdbcReadDataTypes.cs" />
     <Compile Include="TestWriteFileOleDb.cs" />
     <Compile Include="TestWriteFileOdbc.cs" />
-    <Compile Include="TestWriteFile.cs" />
+    <Compile Include="TestWriteFileSqlServer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
