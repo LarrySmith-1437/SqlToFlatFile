@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.SqlClient;
 using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SqlToFlatFileLib;
@@ -193,12 +194,14 @@ namespace TestSqlToFlatFile
             };
 
             var dataWriter = new DataWriter(_logger, writerParams);
-            dataWriter.Write();
+            Assert.ThrowsException<SqlException>(delegate
+            {
+                dataWriter.Write();
+            });
+            //var outputFileInfo = new FileInfo(outputFile);
 
-            var outputFileInfo = new FileInfo(outputFile);
-
-            Assert.IsTrue(outputFileInfo.Exists);
-            Assert.IsTrue(outputFileInfo.Length > 5);
+            //Assert.IsTrue(outputFileInfo.Exists);
+            //Assert.IsTrue(outputFileInfo.Length > 5);
 
         }
 
