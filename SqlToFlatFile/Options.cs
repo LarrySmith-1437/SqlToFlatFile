@@ -33,6 +33,10 @@ namespace SqlToFlatFile
         [Option('i', longName: "InlineQuery", HelpText = "Text of the query to be executed", Required = false, Default = "")]
         public string InlineQuery { get; set; }
 
+        [Value(7)]
+        [Option('x', longName: "CommandTimeout", HelpText = "Command Timeout in seconds", Required = false, Default = 120)]
+        public int  CommandTimeout { get; set; }
+
 
         public void Validate()
         {

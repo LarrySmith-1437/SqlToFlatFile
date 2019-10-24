@@ -66,7 +66,7 @@ namespace SqlToFlatFileLib
                     conn.Open();
                     using (var cmd = conn.CreateCommand())
                     {
-                        cmd.CommandTimeout = 120;
+                        cmd.CommandTimeout = _writerParams.CommandTimeout;
                         cmd.CommandText = GetQuery();
                         cmd.CommandType = CommandType.Text;
 

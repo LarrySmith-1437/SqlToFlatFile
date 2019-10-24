@@ -41,7 +41,8 @@ namespace SqlToFlatFile
                     InlineQuery = parsedOptions.InlineQuery,
                     QueryFile = parsedOptions.QueryFile,
                     TextEnclosure = parsedOptions.TextEnclosure,
-                    WriteColNamesAsHeader = parsedOptions.Header
+                    WriteColNamesAsHeader = parsedOptions.Header,
+                    CommandTimeout = parsedOptions.CommandTimeout
                 };
 
                 var dataWriter = new DataWriter(logger, writerParams);
