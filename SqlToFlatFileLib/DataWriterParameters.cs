@@ -20,6 +20,8 @@ namespace SqlToFlatFileLib
         public string TextEnclosure { get; set; }    
         public DatabaseType DatabaseType { get; set; }
 
+        public int CommandTimeout { get; set; }
+
         public void LogParameters(Logging.IAppLogger appLogger)
         {
             appLogger.Debug($"Query File name= {QueryFile}");
@@ -27,6 +29,7 @@ namespace SqlToFlatFileLib
             appLogger.Debug($"Output File Path= {OutputFilePath}");
             appLogger.Debug($"Delimiter= {Delimiter}");
             appLogger.Debug($"DatabaseType= {DatabaseType.ToString()}");
+            appLogger.Debug($"CommmandTimeout= {CommandTimeout}");
 
             string partialConnectionString = "";
             var sections = ConnectionString.Split(';');
