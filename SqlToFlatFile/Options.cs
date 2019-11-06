@@ -38,6 +38,10 @@ namespace SqlToFlatFile
         public int  CommandTimeout { get; set; }
 
 
+        [Value(8)]
+        [Option('e', longName: "SuppressEmptyFile", HelpText = "Suppress output file if query has no results", Required = false, Default = false)]
+        public bool SuppressEmptyFile { get; set; }
+
         public void Validate()
         {
             if (InlineQuery == "" && QueryFile == "")

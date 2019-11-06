@@ -144,6 +144,37 @@ namespace TestSqlToFlatFile
         }
 
         [TestMethod]
+        public void OdbcTestWriterWithNoDataShouldSuppressEmptyFileIfConfigured()
+        {
+            var outputFile = "nofile{currentdatetime:format=yyyyMMdd}Odbc.txt";
+            var outputFileIntended = "nofile" + DateTime.Now.ToString("yyyyMMdd") + "Odbc.txt";
+
+            var writerParams = new DataWriterParameters
+            {
+                ConnectionString = _connectionString,
+                DatabaseType = DatabaseType.Odbc,
+                InlineQuery = "select 1 where 1 = 2",
+                OutputFilePath = outputFile,
+                Delimiter = "\t",
+                SuppressEmptyFile = true
+            };
+
+            var dataWriter = new DataWriter(_logger, writerParams);
+            Assert.AreEqual(outputFileIntended, Path.GetFileName(dataWriter.CalculatedOutputFilePath));
+
+            if (File.Exists(dataWriter.CalculatedOutputFilePath))
+            {
+                File.Delete(dataWriter.CalculatedOutputFilePath);
+            }
+
+            dataWriter.Write();
+
+            var outputFileInfo = new FileInfo(dataWriter.CalculatedOutputFilePath);
+
+            Assert.IsFalse(outputFileInfo.Exists);
+        }
+
+        [TestMethod]
         public void OdbcTestCommonSqlDataTypesCanBeWritten()
         {
             var outputFile = "testDataTypes_TextEnclosureOdbc.csv";

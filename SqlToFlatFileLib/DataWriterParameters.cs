@@ -20,6 +20,8 @@ namespace SqlToFlatFileLib
         public string TextEnclosure { get; set; }    
         public DatabaseType DatabaseType { get; set; }
 
+        public bool SuppressEmptyFile { get; set; }
+
         public int CommandTimeout { get; set; }
 
         public void LogParameters(Logging.IAppLogger appLogger)
@@ -30,6 +32,7 @@ namespace SqlToFlatFileLib
             appLogger.Debug($"Delimiter= {Delimiter}");
             appLogger.Debug($"DatabaseType= {DatabaseType.ToString()}");
             appLogger.Debug($"CommmandTimeout= {CommandTimeout}");
+            appLogger.Debug($"SuppressEmptyFile= {SuppressEmptyFile}");
 
             string partialConnectionString = "";
             var sections = ConnectionString.Split(';');

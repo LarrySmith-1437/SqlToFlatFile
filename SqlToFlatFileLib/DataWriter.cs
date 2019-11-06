@@ -96,7 +96,9 @@ namespace SqlToFlatFileLib
 
                         if (recordCounter == 0)
                         {
-                            _logger.Info("No records were returned.");
+                            _logger.Info("No records were returned. Removing empty output file.");
+                            if(_writerParams.SuppressEmptyFile)
+                                File.Delete(filename);
                             return;
                         }
                         _logger.Info($"{recordCounter} records written.");
