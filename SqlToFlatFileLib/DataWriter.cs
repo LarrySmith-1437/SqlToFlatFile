@@ -64,6 +64,7 @@ namespace SqlToFlatFileLib
                 using (var conn = GetDbConnectionForDatabaseType())
                 {
                     conn.Open();
+                    _logger.Debug("Connection Opened.");
                     using (var cmd = conn.CreateCommand())
                     {
                         cmd.CommandTimeout = _writerParams.CommandTimeout;
