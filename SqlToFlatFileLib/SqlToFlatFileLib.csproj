@@ -1,10 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net472</TargetFramework>
+    <TargetFramework>net471</TargetFramework>
     <AssemblyName>SqlToFlatFileLib</AssemblyName>
-    <AssemblyVersion>1.1.0.0</AssemblyVersion>
-    <Version>1.1.0</Version>
+    <AssemblyVersion>1.2.0.0</AssemblyVersion>
+    <Version>1.2.0</Version>
     <AssemblyTitle>SqlToFlatFileLib</AssemblyTitle>
     <Description>Dump any data source (ODBC, OleDB, Sql Native) to a delimited file.</Description>
     <Copyright>2019</Copyright>
@@ -13,8 +13,9 @@
     <RepositoryType>Github</RepositoryType>
     <PackageTags>Export Flat File</PackageTags>
     <Authors>Lawrence M. Smith</Authors>
-    <PackageReleaseNotes>Downgraded the .net build target to 4.5.2 (from 4.6.2) to allow lower frameworks to be able to use it.</PackageReleaseNotes>
-    <FileVersion>1.1.0.0</FileVersion>
+    <PackageReleaseNotes>upgraded to 4.7.1
+Added option to suppress/remove empty file if result set is empty</PackageReleaseNotes>
+    <FileVersion>1.2.0.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
