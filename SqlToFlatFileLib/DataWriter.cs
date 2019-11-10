@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.Odbc;
 using System.Data.OleDb;
 using System.Data.SqlClient;
-using System.Globalization;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SqlToFlatFileLib.Logging;
 
 namespace SqlToFlatFileLib
@@ -78,7 +73,7 @@ namespace SqlToFlatFileLib
                         _logger.Info($"File to be written to: {filename}");
                         File.Delete(filename);
 
-                        StreamWriter fileWriter = null;
+                        StreamWriter fileWriter;
 
                         fileWriter = InitializeFile(filename);
                         WriteFileHeader(reader, fileWriter);

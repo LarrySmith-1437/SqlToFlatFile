@@ -21,7 +21,7 @@ namespace SqlToFlatFile
             try
             {
                 Options parsedOptions = null;
-                var optionResult = Parser.Default.ParseArguments<Options>(args)
+                Parser.Default.ParseArguments<Options>(args)
                     .WithParsed(options => parsedOptions = options);                
 
                 if (null == parsedOptions)
