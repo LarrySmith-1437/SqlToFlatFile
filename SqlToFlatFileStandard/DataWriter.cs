@@ -6,7 +6,7 @@ using System.Data.SqlClient;
 using System.IO;
 using Microsoft.Extensions.Logging;
 
-namespace SqlToFlatFileLib
+namespace SqlToFlatFileStandard
 {
     public class DataWriter : IDataWriter
     {
@@ -14,13 +14,7 @@ namespace SqlToFlatFileLib
 
         private DataWriterParameters _writerParams;
 
-        public string CalculatedOutputFilePath
-        {
-            get
-            {
-                return DateContentRenderer.Render(_writerParams.OutputFilePath, "currentdatetime", DateTime.Now);
-            }
-        }
+        public string CalculatedOutputFilePath => DateContentRenderer.Render(_writerParams.OutputFilePath, "currentdatetime", DateTime.Now);
 
         public DataWriter(ILogger logger)
         {

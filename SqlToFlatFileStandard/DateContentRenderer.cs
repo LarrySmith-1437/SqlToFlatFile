@@ -2,7 +2,7 @@
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace SqlToFlatFileLib
+namespace SqlToFlatFileStandard
 {
     public static class DateContentRenderer
     {            
@@ -26,7 +26,7 @@ namespace SqlToFlatFileLib
             {
                 var dateFormat = _defaultDateFormat;
                 var match = matches[i];
-                int posFormat =  match.Value.IndexOf(":format=");
+                int posFormat =  match.Value.IndexOf(":format=", StringComparison.Ordinal);
                 if (posFormat > 0)
                 {
                     dateFormat = match.Value.Substring(posFormat + 8,

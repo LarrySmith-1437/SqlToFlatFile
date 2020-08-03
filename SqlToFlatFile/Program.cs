@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Data.SqlClient;
 using CommandLine;
-using SqlToFlatFileLib.Logging;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Serilog;
 using SqlToFlatFileLib;
+using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace SqlToFlatFile
 {
@@ -13,67 +17,51 @@ namespace SqlToFlatFile
         */
         static void Main(string[] args)
         {
-            IAppLogger logger = DefaultLogger.Instance;
+            IConfiguration configuration = new ConfigurationBuilder()
+                .AddEnvironmentVariables()
+                .Build();
 
-            logger.Info("");
-            logger.Info("------ Begining Execution ---------");
+            var log = new LoggerConfiguration()
+                .WriteTo.Console()
+                .WriteTo.File("file.txt")
+                .CreateLogger();
 
-            try
+            var services = new ServiceCollection();
+            ConfigureServices(services);
+
+            Options parsedOptions = null;
+            Parser.Default.ParseArguments<Options>(args)
+                .WithParsed(options => parsedOptions = options);
+
+            if (null == parsedOptions)
             {
-                Options parsedOptions = null;
-                Parser.Default.ParseArguments<Options>(args)
-                    .WithParsed(options => parsedOptions = options);                
-
-                if (null == parsedOptions)
-                {
-                    logger.Fatal("Application could not parse the command line parameters provided");
-                    Environment.Exit(-1);
-                }
-
-                parsedOptions.Validate();
-
-                LogCommandLineArgs(logger, parsedOptions);
-                var writerParams = new DataWriterParameters
-                {
-                    ConnectionString = parsedOptions.ConnectionString,
-                    Delimiter = parsedOptions.Delimiter,
-                    OutputFilePath = parsedOptions.OutputFilePath,
-                    InlineQuery = parsedOptions.InlineQuery,
-                    QueryFile = parsedOptions.QueryFile,
-                    TextEnclosure = parsedOptions.TextEnclosure,
-                    WriteColNamesAsHeader = parsedOptions.Header,
-                    CommandTimeout = parsedOptions.CommandTimeout,
-                    SuppressEmptyFile=parsedOptions.SuppressEmptyFile
-                };
-
-                var dataWriter = new DataWriter(logger, writerParams);
-
-                dataWriter.Write();
-            }
-            catch (Exception ex)
-            {
-                logger.Error("Exception occurred:",ex);
+                log.Fatal("Application could not parse the command line parameters provided");
                 Environment.Exit(-1);
             }
+
+            using (ServiceProvider serviceProvider = services.BuildServiceProvider())
+            {
+                ApplicationLogic app = serviceProvider.GetService<ApplicationLogic>();
+                // Start up logic here
+                try
+                {
+                    app.Run(parsedOptions);
+                }
+                catch (Exception ex)
+                {
+                    log.Error(ex, "Exception occurred:");
+                    Environment.Exit(-1);
+                }
+            }
+
+
         }
-        private static void LogCommandLineArgs(IAppLogger logger, Options parsedOptions)
+
+        private static void ConfigureServices(IServiceCollection services)
         {
-
-            logger.Info("parsed command line arguments");
-            var connbld = new SqlConnectionStringBuilder(parsedOptions.ConnectionString);
-            var partialConn = $"DataSource={connbld.DataSource};InitialCatalog={connbld.InitialCatalog}";
-            logger.Info($"   ConnectionString     = {partialConn}");
-            logger.Info($"   OutputFilePath       = {parsedOptions.OutputFilePath}");
-            logger.Info($"   QueryFile            = {parsedOptions.QueryFile}");
-            //logger.Info($"   DateTimeSuffixFormat = {GetDateSuffixFormat(parsedOptions) }");
-            logger.Info($"   Header               = {parsedOptions.Header }");
-            logger.Info($"   Delimiter            = {parsedOptions.Delimiter }");
-            logger.Info($"   Text Enclosure       = {parsedOptions.TextEnclosure}");
+            services
+                .AddLogging(configure => configure.AddSerilog())
+                .AddTransient<ApplicationLogic>();
         }
-
-        //private static string GetDateSuffixFormat(Options options)
-        //{
-        //    return String.IsNullOrWhiteSpace(options.DateSuffixFormat) ? "" : options.DateSuffixFormat;
-        //}
     }
 }

@@ -1,8 +1,9 @@
 ﻿using System;
 using System.IO;
+using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using SqlToFlatFileLib;
-using SqlToFlatFileLib.Logging;
 
 namespace TestSqlToFlatFile
 {
@@ -11,7 +12,13 @@ namespace TestSqlToFlatFile
     {
         private string _connectionString =
             @"Provider=SQLNCLI11;Server=(localdb)\Projectsv13;Database=master;Trusted_Connection=yes;";
-        private static IAppLogger _logger = DefaultLogger.Instance;
+        private static ILogger _logger;
+
+        [ClassInitialize]
+        public static void TestInit(TestContext context)
+        {
+            _logger = new Mock<ILogger>().Object;
+        }
 
         [TestMethod]
         public void OleDbTestWriter()
