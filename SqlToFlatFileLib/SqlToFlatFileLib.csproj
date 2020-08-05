@@ -2,7 +2,18 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Version>2.0.0</Version>
+    <Version>2.0.1</Version>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <Authors>Lawrence M. Smith</Authors>
+    <Copyright>2020</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Description>Rebuilt package as a .Net Standard 2.0 library
+
+In your project, you may also need to include: 
+System.Data.Common 
+System.Data.Odbc
+System.Data.OleDb
+System.Data.SqlClient</Description>
   </PropertyGroup>
 
   <ItemGroup>
