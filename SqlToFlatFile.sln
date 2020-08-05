@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30320.27
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SqlToFlatFileLib", "SqlToFlatFileLib\SqlToFlatFileLib.csproj", "{51BE8830-359D-4111-B07E-10216DCDCBE5}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlToFlatFile", "SqlToFlatFile\SqlToFlatFile.csproj", "{7AAB4218-DB36-43C4-8796-AF0322B75907}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestSqlToFlatFile", "TestSqlToFlatFile\TestSqlToFlatFile.csproj", "{C8EF68C2-C6A4-4A55-8D64-1691988B4032}"
@@ -17,10 +15,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{51BE8830-359D-4111-B07E-10216DCDCBE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{51BE8830-359D-4111-B07E-10216DCDCBE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{51BE8830-359D-4111-B07E-10216DCDCBE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{51BE8830-359D-4111-B07E-10216DCDCBE5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7AAB4218-DB36-43C4-8796-AF0322B75907}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7AAB4218-DB36-43C4-8796-AF0322B75907}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7AAB4218-DB36-43C4-8796-AF0322B75907}.Release|Any CPU.ActiveCfg = Release|Any CPU
