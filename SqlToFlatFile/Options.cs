@@ -22,7 +22,7 @@ namespace SqlToFlatFile
         public string Delimiter { get; set; }
 
         [Value(4)]
-        [Option('t', longName: "Text Enclosuer", HelpText = "for text fields, if supplied, wrap txt values with the supplied character(s)", Required = false, Default = "")]
+        [Option('t', longName: "Text Enclosure", HelpText = "for text fields, if supplied, wrap txt values with the supplied character(s)", Required = false, Default = "")]
         public string TextEnclosure { get; set; }
 
         [Value(5)]
