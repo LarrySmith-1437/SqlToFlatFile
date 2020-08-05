@@ -3,7 +3,7 @@ using System.IO;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using SqlToFlatFileLib;
+using SqlToFlatFileStandard;
 
 namespace TestSqlToFlatFile
 {
@@ -41,7 +41,7 @@ namespace TestSqlToFlatFile
             var dataWriter = new DataWriter(_logger, writerParams);
             dataWriter.Write();
 
-            var execDir = System.IO.Path.GetDirectoryName(new System.Uri(System.Reflection.Assembly.GetExecutingAssembly().CodeBase).LocalPath);
+            Path.GetDirectoryName(new Uri(System.Reflection.Assembly.GetExecutingAssembly().CodeBase).LocalPath);
 
             var outputFileInfo = new FileInfo(outputFile);
 
@@ -52,7 +52,7 @@ namespace TestSqlToFlatFile
         [TestMethod]
         public void OleDbTestWriterWithDateSuffix_ExplicitDirectory()
         {
-            var execDir = System.IO.Path.GetDirectoryName(new System.Uri(System.Reflection.Assembly.GetExecutingAssembly().CodeBase).LocalPath);
+            var execDir = Path.GetDirectoryName(new Uri(System.Reflection.Assembly.GetExecutingAssembly().CodeBase).LocalPath);
 
             var outputFile = Path.Combine(execDir, "testExplicitWithDate{currentdatetime:format=yyyyMMdd}OleDb.csv");
             var outputFileIntended = "testExplicitWithDate" + DateTime.Now.ToString("yyyyMMdd") + "OleDb.csv";

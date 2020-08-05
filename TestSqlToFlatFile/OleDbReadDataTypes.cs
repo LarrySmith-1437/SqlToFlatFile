@@ -1,10 +1,8 @@
-﻿using System;
-using System.Data;
-using System.IO;
+﻿using System.Data;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using SqlToFlatFileLib;
+using SqlToFlatFileStandard;
 
 namespace TestSqlToFlatFile
 {
@@ -57,6 +55,7 @@ namespace TestSqlToFlatFile
                 _reader?.Close();
                 _conn?.Close();
             }
+            // ReSharper disable once EmptyGeneralCatchClause
             catch
             {
             }
