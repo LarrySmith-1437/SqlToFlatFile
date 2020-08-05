@@ -1,8 +1,9 @@
 ﻿using System;
 using System.IO;
+using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using SqlToFlatFileLib;
-using SqlToFlatFileLib.Logging;
 
 namespace TestSqlToFlatFile
 {
@@ -11,7 +12,13 @@ namespace TestSqlToFlatFile
     {
         private string _connectionString =
             @"Provider=SQLNCLI11;Server=(localdb)\Projectsv13;Database=master;Trusted_Connection=yes;";
-        private static IAppLogger _logger = DefaultLogger.Instance;
+        private static ILogger _logger;
+
+        [ClassInitialize]
+        public static void TestInit(TestContext context)
+        {
+            _logger = new Mock<ILogger>().Object;
+        }
 
         [TestMethod]
         public void OleDbTestWriter()
@@ -34,7 +41,7 @@ namespace TestSqlToFlatFile
             var dataWriter = new DataWriter(_logger, writerParams);
             dataWriter.Write();
 
-            var execDir = System.IO.Path.GetDirectoryName(new System.Uri(System.Reflection.Assembly.GetExecutingAssembly().CodeBase).LocalPath);
+            Path.GetDirectoryName(new Uri(System.Reflection.Assembly.GetExecutingAssembly().CodeBase).LocalPath);
 
             var outputFileInfo = new FileInfo(outputFile);
 
@@ -45,7 +52,7 @@ namespace TestSqlToFlatFile
         [TestMethod]
         public void OleDbTestWriterWithDateSuffix_ExplicitDirectory()
         {
-            var execDir = System.IO.Path.GetDirectoryName(new System.Uri(System.Reflection.Assembly.GetExecutingAssembly().CodeBase).LocalPath);
+            var execDir = Path.GetDirectoryName(new Uri(System.Reflection.Assembly.GetExecutingAssembly().CodeBase).LocalPath);
 
             var outputFile = Path.Combine(execDir, "testExplicitWithDate{currentdatetime:format=yyyyMMdd}OleDb.csv");
             var outputFileIntended = "testExplicitWithDate" + DateTime.Now.ToString("yyyyMMdd") + "OleDb.csv";

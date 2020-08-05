@@ -2,7 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SqlToFlatFileLib;
 
-namespace TestSqlToXlsx
+namespace TestSqlToFlatFile
 {
     [TestClass]
     public class TestDataWriterParameters

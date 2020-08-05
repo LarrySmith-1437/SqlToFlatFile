@@ -1,9 +1,8 @@
-﻿using System;
-using System.Data;
-using System.IO;
+﻿using System.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.Extensions.Logging;
+using Moq;
 using SqlToFlatFileLib;
-using SqlToFlatFileLib.Logging;
 
 namespace TestSqlToFlatFile
 {
@@ -16,12 +15,13 @@ namespace TestSqlToFlatFile
         private static IDataReader _reader;
         private static DataWriter _dataWriter;
         private static IDbConnection _conn;
-        private static IAppLogger _logger = DefaultLogger.Instance;
+        private static ILogger _logger;
 
 
         [ClassInitialize]
         public static void ClassInitialize(TestContext context)
         {
+            _logger = new Mock<ILogger>().Object;
             var outputFile = "testOdbcReadDataTypes.txt";
             var writerParams = new DataWriterParameters
             {
@@ -55,6 +55,7 @@ namespace TestSqlToFlatFile
                 _reader?.Close();
                 _conn?.Close();
             }
+            // ReSharper disable once EmptyGeneralCatchClause
             catch
             {
             }

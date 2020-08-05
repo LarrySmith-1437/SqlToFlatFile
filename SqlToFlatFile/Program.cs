@@ -1,79 +1,78 @@
 ﻿using System;
-using System.Data.SqlClient;
+using System.Text;
 using CommandLine;
-using SqlToFlatFileLib.Logging;
-using SqlToFlatFileLib;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Serilog;
+using Serilog.Core;
+using Serilog.Events;
+using ILogger = Serilog.ILogger;
 
 namespace SqlToFlatFile
 {
     class Program
     {
+        private static Logger _serilogLogger;
+
         /* sample command line
         -w "ISO with Reseller Info" -c "Server=intreport1;Database=aprivapos;Trusted_Connection=True;" -q "..\..\..\TestSqlToFlatFile\IsoWithResellerQuery.sql" -o "test1.xlsx"
         */
         static void Main(string[] args)
         {
-            IAppLogger logger = DefaultLogger.Instance;
+            //IConfiguration configuration = new ConfigurationBuilder()
+            //    .AddEnvironmentVariables()
+            //    .Build();
 
-            logger.Info("");
-            logger.Info("------ Begining Execution ---------");
+            _serilogLogger = new LoggerConfiguration()
+                .MinimumLevel.Verbose()
+                .WriteTo.Console()
+                .WriteTo.File("SqlToFlatFile..log", rollingInterval: RollingInterval.Day,
+                    restrictedToMinimumLevel: LogEventLevel.Verbose,
+                    encoding: Encoding.UTF8)
+                .WriteTo.Debug()
+                .CreateLogger();
 
+            _serilogLogger.Information("App starting up.");
+
+            var serviceCollection = new ServiceCollection();
+            ConfigureServices(serviceCollection);
+            var serviceProvider = serviceCollection.BuildServiceProvider();
+
+            //var logger = serviceProvider.GetService<ILogger<Program>>();  // way to get a logger via DI logger factory
+
+            Options parsedOptions = null;
+            Parser.Default.ParseArguments<Options>(args)
+                .WithParsed(options => parsedOptions = options);
+
+            if (null == parsedOptions)
+            {
+                _serilogLogger.Fatal("Application could not parse the command line parameters provided");
+                Environment.Exit(-1);
+            }
+
+            ApplicationLogic app = serviceProvider.GetService<ApplicationLogic>();
+            // Start up logic here
             try
             {
-                Options parsedOptions = null;
-                Parser.Default.ParseArguments<Options>(args)
-                    .WithParsed(options => parsedOptions = options);                
-
-                if (null == parsedOptions)
-                {
-                    logger.Fatal("Application could not parse the command line parameters provided");
-                    Environment.Exit(-1);
-                }
-
-                parsedOptions.Validate();
-
-                LogCommandLineArgs(logger, parsedOptions);
-                var writerParams = new DataWriterParameters
-                {
-                    ConnectionString = parsedOptions.ConnectionString,
-                    Delimiter = parsedOptions.Delimiter,
-                    OutputFilePath = parsedOptions.OutputFilePath,
-                    InlineQuery = parsedOptions.InlineQuery,
-                    QueryFile = parsedOptions.QueryFile,
-                    TextEnclosure = parsedOptions.TextEnclosure,
-                    WriteColNamesAsHeader = parsedOptions.Header,
-                    CommandTimeout = parsedOptions.CommandTimeout,
-                    SuppressEmptyFile=parsedOptions.SuppressEmptyFile
-                };
-
-                var dataWriter = new DataWriter(logger, writerParams);
-
-                dataWriter.Write();
+                app.Run(parsedOptions);
             }
             catch (Exception ex)
             {
-                logger.Error("Exception occurred:",ex);
+                _serilogLogger.Error(ex, "Exception occurred:");
                 Environment.Exit(-1);
             }
         }
-        private static void LogCommandLineArgs(IAppLogger logger, Options parsedOptions)
+
+        private static void ConfigureServices(IServiceCollection serviceCollection)
         {
-
-            logger.Info("parsed command line arguments");
-            var connbld = new SqlConnectionStringBuilder(parsedOptions.ConnectionString);
-            var partialConn = $"DataSource={connbld.DataSource};InitialCatalog={connbld.InitialCatalog}";
-            logger.Info($"   ConnectionString     = {partialConn}");
-            logger.Info($"   OutputFilePath       = {parsedOptions.OutputFilePath}");
-            logger.Info($"   QueryFile            = {parsedOptions.QueryFile}");
-            //logger.Info($"   DateTimeSuffixFormat = {GetDateSuffixFormat(parsedOptions) }");
-            logger.Info($"   Header               = {parsedOptions.Header }");
-            logger.Info($"   Delimiter            = {parsedOptions.Delimiter }");
-            logger.Info($"   Text Enclosure       = {parsedOptions.TextEnclosure}");
+            serviceCollection
+                .AddLogging(loggingBuilder =>
+                {
+                    loggingBuilder.SetMinimumLevel(LogLevel.Trace);
+                    loggingBuilder.AddSerilog(_serilogLogger);
+                })
+                .AddTransient<ApplicationLogic>();
         }
-
-        //private static string GetDateSuffixFormat(Options options)
-        //{
-        //    return String.IsNullOrWhiteSpace(options.DateSuffixFormat) ? "" : options.DateSuffixFormat;
-        //}
     }
 }

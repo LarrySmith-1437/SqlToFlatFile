@@ -4,30 +4,24 @@ using System.Data.Odbc;
 using System.Data.OleDb;
 using System.Data.SqlClient;
 using System.IO;
-using SqlToFlatFileLib.Logging;
+using Microsoft.Extensions.Logging;
 
 namespace SqlToFlatFileLib
 {
     public class DataWriter : IDataWriter
     {
-        private IAppLogger _logger;
+        private ILogger _logger;
 
         private DataWriterParameters _writerParams;
 
-        public string CalculatedOutputFilePath
-        {
-            get
-            {
-                return DateContentRenderer.Render(_writerParams.OutputFilePath, "currentdatetime", DateTime.Now);
-            }
-        }
+        public string CalculatedOutputFilePath => DateContentRenderer.Render(_writerParams.OutputFilePath, "currentdatetime", DateTime.Now);
 
-        public DataWriter(IAppLogger logger)
+        public DataWriter(ILogger logger)
         {
             _logger = logger;
         }
 
-        public DataWriter(IAppLogger logger, DataWriterParameters writerParameters )
+        public DataWriter(ILogger logger, DataWriterParameters writerParameters )
             : this(logger)
         {
             _writerParams = writerParameters;
@@ -52,14 +46,14 @@ namespace SqlToFlatFileLib
         {
             try
             {
-                _logger.Info("begin SqlToFlatFileLib.DataWriter.Write operation");
+                _logger.LogInformation("begin SqlToFlatFileLib.DataWriter.Write operation");
 
                 _writerParams.LogParameters(_logger);
 
                 using (var conn = GetDbConnectionForDatabaseType())
                 {
                     conn.Open();
-                    _logger.Debug("Connection Opened.");
+                    _logger.LogDebug("Connection Opened.");
                     using (var cmd = conn.CreateCommand())
                     {
                         cmd.CommandTimeout = _writerParams.CommandTimeout;
@@ -70,7 +64,7 @@ namespace SqlToFlatFileLib
 
                         var filename = CalculatedOutputFilePath;
 
-                        _logger.Info($"File to be written to: {filename}");
+                        _logger.LogInformation($"File to be written to: {filename}");
                         File.Delete(filename);
 
                         StreamWriter fileWriter;
@@ -92,22 +86,22 @@ namespace SqlToFlatFileLib
 
                         if (recordCounter == 0)
                         {
-                            _logger.Info("No records were returned.");
+                            _logger.LogInformation("No records were returned.");
                             if (_writerParams.SuppressEmptyFile)
                             {
-                                _logger.Info("Suppress Empty File, Removing empty output file.");
+                                _logger.LogInformation("Suppress Empty File, Removing empty output file.");
                                 File.Delete(filename);
                             }
 
                             return;
                         }
-                        _logger.Info($"{recordCounter} records written.");
+                        _logger.LogInformation($"{recordCounter} records written.");
                     }
                 }
             }
             catch (Exception ex)
             {
-                _logger.Error("File Writing failed due to exception. ", ex);
+                _logger.LogError(ex,"File Writing failed due to exception. ");
                 throw;
             }
         }

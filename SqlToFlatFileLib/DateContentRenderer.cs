@@ -19,8 +19,6 @@ namespace SqlToFlatFileLib
         {           
             StringBuilder buildOutput = new StringBuilder(input);
 
-            var regexString = @"\{" + metaTag + @".*?\}";
-
             var regex = new Regex(@"\{"+ metaTag + @".*?\}", RegexOptions.Compiled);
 
             var matches = regex.Matches(input);
@@ -28,7 +26,7 @@ namespace SqlToFlatFileLib
             {
                 var dateFormat = _defaultDateFormat;
                 var match = matches[i];
-                int posFormat =  match.Value.IndexOf(":format=");
+                int posFormat =  match.Value.IndexOf(":format=", StringComparison.Ordinal);
                 if (posFormat > 0)
                 {
                     dateFormat = match.Value.Substring(posFormat + 8,

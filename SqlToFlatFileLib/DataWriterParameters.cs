@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.Extensions.Logging;
 
 namespace SqlToFlatFileLib
 {
@@ -17,15 +18,15 @@ namespace SqlToFlatFileLib
 
         public int CommandTimeout { get; set; }
 
-        public void LogParameters(Logging.IAppLogger appLogger)
+        public void LogParameters(ILogger appLogger)
         {
-            appLogger.Debug($"Query File name= {QueryFile}");
-            appLogger.Debug($"InlineQuery= {InlineQuery}");
-            appLogger.Debug($"Output File Path= {OutputFilePath}");
-            appLogger.Debug($"Delimiter= {Delimiter}");
-            appLogger.Debug($"DatabaseType= {DatabaseType.ToString()}");
-            appLogger.Debug($"CommmandTimeout= {CommandTimeout}");
-            appLogger.Debug($"SuppressEmptyFile= {SuppressEmptyFile}");
+            appLogger.LogDebug($"Query File name= {QueryFile}");
+            appLogger.LogDebug($"InlineQuery= {InlineQuery}");
+            appLogger.LogDebug($"Output File Path= {OutputFilePath}");
+            appLogger.LogDebug($"Delimiter= {Delimiter}");
+            appLogger.LogDebug($"DatabaseType= {DatabaseType.ToString()}");
+            appLogger.LogDebug($"CommmandTimeout= {CommandTimeout}");
+            appLogger.LogDebug($"SuppressEmptyFile= {SuppressEmptyFile}");
 
             string partialConnectionString = "";
             var sections = ConnectionString.Split(';');
@@ -39,7 +40,7 @@ namespace SqlToFlatFileLib
                 partialConnectionString += section + ";";
             }
 
-            appLogger.Debug($"Partial Connection String= {partialConnectionString}");
+            appLogger.LogDebug($"Partial Connection String= {partialConnectionString}");
         }
 
         public void Validate()

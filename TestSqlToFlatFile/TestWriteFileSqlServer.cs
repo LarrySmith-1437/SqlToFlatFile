@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Data.SqlClient;
 using System.IO;
+using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using SqlToFlatFileLib;
-using SqlToFlatFileLib.Logging;
 
 namespace TestSqlToFlatFile
 {
@@ -12,7 +13,13 @@ namespace TestSqlToFlatFile
     {
         private string _connectionString =
             @"Server=(localdb)\Projectsv13;Database=master;Trusted_Connection=True;";
-        private static IAppLogger _logger = DefaultLogger.Instance;
+        private static ILogger _logger;
+
+        [ClassInitialize]
+        public static void TestInit(TestContext context)
+        {
+            _logger = new Mock<ILogger>().Object;
+        }
 
         [TestMethod]
         public void TestWriter()
@@ -44,7 +51,7 @@ namespace TestSqlToFlatFile
         [TestMethod]
         public void TestWriterWithDateSuffix_ExplicitDirectory()
         {
-            var execDir = System.IO.Path.GetDirectoryName(new System.Uri(System.Reflection.Assembly.GetExecutingAssembly().CodeBase).LocalPath);
+            var execDir = Path.GetDirectoryName(new Uri(System.Reflection.Assembly.GetExecutingAssembly().CodeBase).LocalPath);
 
             var outputFile = Path.Combine(execDir, "testExplicitWithDate{currentdatetime:format=yyyyMMdd}.csv");
             var outputFileIntended = "testExplicitWithDate" + DateTime.Now.ToString("yyyyMMdd") + ".csv";
