@@ -1,4 +1,4 @@
-﻿namespace SqlToFlatFileStandard
+﻿namespace SqlToFlatFileLib
 {
     public enum DatabaseType
     {

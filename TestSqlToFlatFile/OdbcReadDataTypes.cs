@@ -2,7 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Extensions.Logging;
 using Moq;
-using SqlToFlatFileStandard;
+using SqlToFlatFileLib;
 
 namespace TestSqlToFlatFile
 {

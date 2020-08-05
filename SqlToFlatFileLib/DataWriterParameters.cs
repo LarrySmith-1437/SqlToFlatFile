@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.Extensions.Logging;
 
-namespace SqlToFlatFileStandard
+namespace SqlToFlatFileLib
 {
     public class DataWriterParameters
     {

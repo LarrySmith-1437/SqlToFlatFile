@@ -2,7 +2,7 @@
 using System.Data;
 using System.Globalization;
 
-namespace SqlToFlatFileStandard
+namespace SqlToFlatFileLib
 {
     public static class DatabaseColumnContentFormatter
     {

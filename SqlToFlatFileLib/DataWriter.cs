@@ -6,7 +6,7 @@ using System.Data.SqlClient;
 using System.IO;
 using Microsoft.Extensions.Logging;
 
-namespace SqlToFlatFileStandard
+namespace SqlToFlatFileLib
 {
     public class DataWriter : IDataWriter
     {

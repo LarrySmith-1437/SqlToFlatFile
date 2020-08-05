@@ -1,6 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SqlToFlatFileStandard;
+using SqlToFlatFileLib;
 
 namespace TestSqlToFlatFile
 {

@@ -102,9 +102,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SqlToFlatFileStandard\SqlToFlatFileStandard.csproj">
-      <Project>{796fe608-3f28-44b1-8b79-4ee93b085ae6}</Project>
-      <Name>SqlToFlatFileStandard</Name>
+    <ProjectReference Include="..\SqlToFlatFileLib\SqlToFlatFileLib.csproj">
+      <Project>{507e9581-e006-465c-a412-3b28e44ede0b}</Project>
+      <Name>SqlToFlatFileLib</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />

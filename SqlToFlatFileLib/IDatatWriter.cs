@@ -1,7 +1,7 @@
 ﻿using System.Data;
 using System.IO;
 
-namespace SqlToFlatFileStandard
+namespace SqlToFlatFileLib
 {
     public interface IDataWriter
     {

@@ -2,7 +2,7 @@
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace SqlToFlatFileStandard
+namespace SqlToFlatFileLib
 {
     public static class DateContentRenderer
     {            
