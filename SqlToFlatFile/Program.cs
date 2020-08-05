@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Data.SqlClient;
 using CommandLine;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Serilog;
-using SqlToFlatFileLib;
-using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace SqlToFlatFile
 {
@@ -27,6 +23,7 @@ namespace SqlToFlatFile
                 .CreateLogger();
 
             var services = new ServiceCollection();
+
             ConfigureServices(services);
 
             Options parsedOptions = null;
@@ -53,8 +50,6 @@ namespace SqlToFlatFile
                     Environment.Exit(-1);
                 }
             }
-
-
         }
 
         private static void ConfigureServices(IServiceCollection services)
