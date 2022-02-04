@@ -212,5 +212,36 @@ namespace TestSqlToFlatFile
 
         }
 
+        [TestMethod]
+        public void TestWriterWithNoDataSuppressesFile()
+        {
+            var outputFile = "suppressedfile{currentdatetime:format=yyyyMMdd}.txt";
+            var outputFileIntended = "suppressedfile" + DateTime.Now.ToString("yyyyMMdd") + ".txt";
+
+            var writerParams = new DataWriterParameters
+            {
+                ConnectionString = _connectionString,
+                InlineQuery = "select col1 = 1 where 1 = 2",
+                OutputFilePath = outputFile,
+                WriteColNamesAsHeader = true,
+                Delimiter = "\t",
+                DatabaseType = DatabaseType.SqlServer,
+                SuppressEmptyFile=true
+            };
+
+            var dataWriter = new DataWriter(_logger, writerParams);
+            Assert.AreEqual(outputFileIntended, Path.GetFileName(dataWriter.CalculatedOutputFilePath));
+
+            if (File.Exists(dataWriter.CalculatedOutputFilePath))
+            {
+                File.Delete(dataWriter.CalculatedOutputFilePath);
+            }
+
+            dataWriter.Write();
+
+            var outputFileInfo = new FileInfo(dataWriter.CalculatedOutputFilePath);
+
+            Assert.IsFalse(outputFileInfo.Exists);
+        }
     }
 }
