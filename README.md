@@ -19,3 +19,8 @@ Finally it outputs the column names as a header line on the first line of the fi
 The output from the exeuction looks like this: 
 
 ![image](https://github.com/LarrySmith-1437/SqlToFlatFile/assets/22043765/b60cbab8-8828-4762-b3fd-35222cadbc88)
+
+
+The output file looks like this: 
+
+![image](https://github.com/LarrySmith-1437/SqlToFlatFile/assets/22043765/cef96fb9-4a00-42cc-ab2d-56b95754b681)
