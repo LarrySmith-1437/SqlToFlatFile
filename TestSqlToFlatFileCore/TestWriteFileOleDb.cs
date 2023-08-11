@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using SqlToFlatFileLib;
 
-namespace TestSqlToFlatFile
+namespace TestSqlToFlatFileCore
 {
     [TestClass]
     public class TestWriteFileOleDb

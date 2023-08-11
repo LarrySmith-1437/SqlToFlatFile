@@ -18,11 +18,11 @@ namespace SqlToFlatFile
         public bool Header { get; set; }
 
         [Value(3)]
-        [Option('s', longName: "Delimiter", HelpText = "Dharacter(s) used to separate fields", Required = false, Default = "")]
+        [Option('s', longName: "Delimiter", HelpText = "Character(s) used to separate fields", Required = false, Default = ",")]
         public string Delimiter { get; set; }
 
         [Value(4)]
-        [Option('t', longName: "Text Enclosure", HelpText = "for text fields, if supplied, wrap txt values with the supplied character(s)", Required = false, Default = "")]
+        [Option('t', longName: "TextEnclosure", HelpText = "for text fields, if supplied, wrap txt values with the supplied character(s)", Required = false, Default = "")]
         public string TextEnclosure { get; set; }
 
         [Value(5)]

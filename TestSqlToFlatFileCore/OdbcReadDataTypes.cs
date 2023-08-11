@@ -1,10 +1,10 @@
 ﻿using System.Data;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Extensions.Logging;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using SqlToFlatFileLib;
 
-namespace TestSqlToFlatFile
+namespace TestSqlToFlatFileCore
 {
     [TestClass]
     public class OdbcReadDataTypes

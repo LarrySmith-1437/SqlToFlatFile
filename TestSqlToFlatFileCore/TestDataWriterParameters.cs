@@ -1,8 +1,7 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SqlToFlatFileLib;
 
-namespace TestSqlToFlatFile
+namespace TestSqlToFlatFileCore
 {
     [TestClass]
     public class TestDataWriterParameters

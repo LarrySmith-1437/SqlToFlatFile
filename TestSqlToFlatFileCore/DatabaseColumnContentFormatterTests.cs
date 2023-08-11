@@ -3,7 +3,7 @@ using System.Data.Odbc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SqlToFlatFileLib;
 
-namespace TestSqlToFlatFile
+namespace TestSqlToFlatFileCore
 {
     [TestClass()]
     public class DatabaseColumnContentFormatterTests

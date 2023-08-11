@@ -2,8 +2,8 @@
 using System.Data;
 using System.Data.Odbc;
 using System.Data.OleDb;
-using System.Data.SqlClient;
 using System.IO;
+using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Logging;
 
 namespace SqlToFlatFileLib

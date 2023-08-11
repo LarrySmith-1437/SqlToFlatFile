@@ -1,18 +1,19 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using System;
+using System.Data.SqlClient;
+using System.IO;
+using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.IO;
 using SqlToFlatFileLib;
 
-namespace TestSqlToFlatFile
+namespace TestSqlToFlatFileCore
 {
     [TestClass]
-    public class TestWriteFileOdbc
+    public class TestWriteFileSqlServer
     {
         private string _connectionString =
-        //@"Provider=MSDASQL;Driver={Sql Server Native Client 11.0};Server=(localdb)\Projectsv13;Database=master;uid=TestOdbc;pwd=TestOdbc;";
-        @"Provider=MSDASQL;Driver={Sql Server Native Client 11.0};Server=(localdb)\Projectsv13;Database=master;Trusted_Connection=yes;";
+            @"Server=(localdb)\Projectsv13;Database=master;Trusted_Connection=True;";
         private static ILogger _logger;
 
         [ClassInitialize]
@@ -22,9 +23,9 @@ namespace TestSqlToFlatFile
         }
 
         [TestMethod]
-        public void OdbcTestWriter()
+        public void TestWriter()
         {
-            var outputFile = "test1Odbc.txt";
+            var outputFile = "test1.txt";
             if (File.Exists(outputFile))
             {
                 File.Delete(outputFile);
@@ -33,16 +34,14 @@ namespace TestSqlToFlatFile
             var writerParams = new DataWriterParameters
             {
                 ConnectionString = _connectionString,
-                DatabaseType = DatabaseType.Odbc,
                 QueryFile = "ReturnAllCommonDataTypesQuery.sql",
                 OutputFilePath = outputFile,
-                Delimiter = "|"
+                Delimiter = "|",
+                DatabaseType = DatabaseType.SqlServer
             };
 
             var dataWriter = new DataWriter(_logger, writerParams);
             dataWriter.Write();
-
-            Path.GetDirectoryName(new Uri(System.Reflection.Assembly.GetExecutingAssembly().CodeBase).LocalPath);
 
             var outputFileInfo = new FileInfo(outputFile);
 
@@ -51,20 +50,22 @@ namespace TestSqlToFlatFile
         }
 
         [TestMethod]
-        public void OdbcTestWriterWithDateSuffix_ExplicitDirectory()
+        public void TestWriterWithDateSuffix_ExplicitDirectory()
         {
             var execDir = Path.GetDirectoryName(new Uri(System.Reflection.Assembly.GetExecutingAssembly().CodeBase).LocalPath);
 
-            var outputFile = Path.Combine(execDir, "testExplicitWithDate{currentdatetime:format=yyyyMMdd}Odbc.csv");
-            var outputFileIntended = "testExplicitWithDate" + DateTime.Now.ToString("yyyyMMdd") + "Odbc.csv";
+            var outputFile = Path.Combine(execDir, "testExplicitWithDate{currentdatetime:format=yyyyMMdd}.csv");
+            var outputFileIntended = "testExplicitWithDate" + DateTime.Now.ToString("yyyyMMdd") + ".csv";
 
             var writerParams = new DataWriterParameters
             {
                 ConnectionString = _connectionString,
-                DatabaseType = DatabaseType.Odbc,
                 QueryFile = "ReturnAllCommonDataTypesQuery.sql",
                 OutputFilePath = outputFile,
-                Delimiter = ","
+                //DateSuffixFormat = "yyyyMMdd",
+                Delimiter = ",",
+                DatabaseType = DatabaseType.SqlServer
+
             };
 
             var dataWriter = new DataWriter(_logger, writerParams);
@@ -85,19 +86,18 @@ namespace TestSqlToFlatFile
         }
 
         [TestMethod]
-        public void OdbcTestWriterWithDateSuffix_ImplicitDirectory()
+        public void TestWriterWithDateSuffix_ImplicitDirectory()
         {
-            var outputFile = "testImplicitWithDateTabs_{currentdatetime:format=yyyyMMdd}Odbc.txt";
-            var outputFileIntended = "testImplicitWithDateTabs_" + DateTime.Now.ToString("yyyyMMdd") + "Odbc.txt";
+            var outputFile = "testImplicitWithDateTabs_{currentdatetime:format=yyyyMMdd}.txt";
+            var outputFileIntended = "testImplicitWithDateTabs_" + DateTime.Now.ToString("yyyyMMdd") + ".txt";
 
             var writerParams = new DataWriterParameters
             {
                 ConnectionString = _connectionString,
-                DatabaseType = DatabaseType.Odbc,
                 QueryFile = "ReturnAllCommonDataTypesQuery.sql",
                 OutputFilePath = outputFile,
-                //DateSuffixFormat = "yyyyMMdd",
-                Delimiter = "\t"
+                Delimiter = "\t",
+                DatabaseType = DatabaseType.SqlServer
             };
 
 
@@ -120,18 +120,19 @@ namespace TestSqlToFlatFile
         }
 
         [TestMethod]
-        public void OdbcTestWriterWithNoDataShouldStillOutputAFile()
+        public void TestWriterWithNoDataShouldStillOutputAFile()
         {
-            var outputFile = "nofile{currentdatetime:format=yyyyMMdd}Odbc.txt";
-            var outputFileIntended = "nofile" + DateTime.Now.ToString("yyyyMMdd") + "Odbc.txt";
+            var outputFile = "nofile{currentdatetime:format=yyyyMMdd}.txt";
+            var outputFileIntended = "nofile" + DateTime.Now.ToString("yyyyMMdd") + ".txt";
 
             var writerParams = new DataWriterParameters
             {
                 ConnectionString = _connectionString,
-                DatabaseType = DatabaseType.Odbc,
-                InlineQuery = "select 1 where 1 = 2",
+                InlineQuery = "select col1 = 1 where 1 = 2",
                 OutputFilePath = outputFile,
-                Delimiter = "\t"
+                WriteColNamesAsHeader = true,
+                Delimiter = "\t",
+                DatabaseType = DatabaseType.SqlServer
             };
 
             var dataWriter = new DataWriter(_logger, writerParams);
@@ -147,22 +148,86 @@ namespace TestSqlToFlatFile
             var outputFileInfo = new FileInfo(dataWriter.CalculatedOutputFilePath);
 
             Assert.IsTrue(outputFileInfo.Exists);
+            Assert.AreEqual("col1\r\n", File.ReadAllText(outputFileInfo.FullName));
         }
 
         [TestMethod]
-        public void OdbcTestWriterWithNoDataShouldSuppressEmptyFileIfConfigured()
+        public void TestCommonSqlDataTypesCanBeWritten()
         {
-            var outputFile = "nofile{currentdatetime:format=yyyyMMdd}Odbc.txt";
-            var outputFileIntended = "nofile" + DateTime.Now.ToString("yyyyMMdd") + "Odbc.txt";
+            var outputFile = "testDataTypes_TextEnclosure.csv";
+            if (File.Exists(outputFile))
+            {
+                File.Delete(outputFile);
+            }
 
             var writerParams = new DataWriterParameters
             {
                 ConnectionString = _connectionString,
-                DatabaseType = DatabaseType.Odbc,
-                InlineQuery = "select 1 where 1 = 2",
+                QueryFile = "ReturnAllCommonDataTypesQuery.sql",
                 OutputFilePath = outputFile,
+                Delimiter = ",",
+                WriteColNamesAsHeader = true,
+                TextEnclosure = "'",
+                DatabaseType = DatabaseType.SqlServer
+            };
+
+            var dataWriter = new DataWriter(_logger, writerParams);
+            dataWriter.Write();
+
+            var outputFileInfo = new FileInfo(outputFile);
+
+            Assert.IsTrue(outputFileInfo.Exists);
+            Assert.IsTrue(outputFileInfo.Length > 10);
+
+        }
+
+        [TestMethod]
+        public void TestQueryThatGeneratesError()
+        {
+            var outputFile = "testErrorQuery.csv";
+            if (File.Exists(outputFile))
+            {
+                File.Delete(outputFile);
+            }
+
+            var writerParams = new DataWriterParameters
+            {
+                ConnectionString = _connectionString,
+                InlineQuery = "Select firstcol = 1/0",
+                OutputFilePath = outputFile,
+                Delimiter = ",",
+                WriteColNamesAsHeader = true,
+                TextEnclosure = "'",
+                DatabaseType = DatabaseType.SqlServer
+            };
+
+            var dataWriter = new DataWriter(_logger, writerParams);
+            Assert.ThrowsException<SqlException>(delegate
+            {
+                dataWriter.Write();
+            });
+            //var outputFileInfo = new FileInfo(outputFile);
+
+            //Assert.IsTrue(outputFileInfo.Exists);
+            //Assert.IsTrue(outputFileInfo.Length > 5);
+
+        }
+
+        [TestMethod]
+        public void TestWriterWithNoDataSuppressesFile()
+        {
+            var outputFile = "suppressedfile{currentdatetime:format=yyyyMMdd}.txt";
+            var outputFileIntended = "suppressedfile" + DateTime.Now.ToString("yyyyMMdd") + ".txt";
+
+            var writerParams = new DataWriterParameters
+            {
+                ConnectionString = _connectionString,
+                InlineQuery = "select col1 = 1 where 1 = 2",
+                OutputFilePath = outputFile,
+                WriteColNamesAsHeader = true,
                 Delimiter = "\t",
-                SuppressEmptyFile = true
+                DatabaseType = DatabaseType.SqlServer,
+                SuppressEmptyFile=true
             };
 
             var dataWriter = new DataWriter(_logger, writerParams);
@@ -178,36 +243,6 @@ namespace TestSqlToFlatFile
             var outputFileInfo = new FileInfo(dataWriter.CalculatedOutputFilePath);
 
             Assert.IsFalse(outputFileInfo.Exists);
-        }
-
-        [TestMethod]
-        public void OdbcTestCommonSqlDataTypesCanBeWritten()
-        {
-            var outputFile = "testDataTypes_TextEnclosureOdbc.csv";
-            if (File.Exists(outputFile))
-            {
-                File.Delete(outputFile);
-            }
-
-            var writerParams = new DataWriterParameters
-            {
-                ConnectionString = _connectionString,
-                DatabaseType = DatabaseType.Odbc,
-                QueryFile = "ReturnAllCommonDataTypesQuery.sql",
-                OutputFilePath = outputFile,
-                Delimiter = ",",
-                WriteColNamesAsHeader = true,
-                TextEnclosure = "'"
-            };
-
-            var dataWriter = new DataWriter(_logger, writerParams);
-            dataWriter.Write();
-
-            var outputFileInfo = new FileInfo(outputFile);
-
-            Assert.IsTrue(outputFileInfo.Exists);
-            Assert.IsTrue(outputFileInfo.Length > 10);
-
         }
     }
 }
