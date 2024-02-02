@@ -9,8 +9,7 @@ namespace TestSqlToFlatFileCore
     [TestClass]
     public class OdbcReadDataTypes
     {
-        private static string _connectionString =
-        @"Provider=MSDASQL;Driver={Sql Server Native Client 11.0};Server=(localdb)\Projectsv13;Database=master;Trusted_Connection=yes;";
+        private static string _connectionString = @"Provider=MSDASQL;Driver={Sql Server Native Client 11.0};Server=(localdb)\mssqllocaldb;Database=master;Trusted_Connection=yes;";
 
         private static IDataReader _reader;
         private static DataWriter _dataWriter;

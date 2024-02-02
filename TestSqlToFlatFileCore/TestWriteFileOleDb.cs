@@ -11,7 +11,7 @@ namespace TestSqlToFlatFileCore
     public class TestWriteFileOleDb
     {
         private string _connectionString =
-            @"Provider=SQLNCLI11;Server=(localdb)\Projectsv13;Database=master;Trusted_Connection=yes;";
+            @"Provider=SQLNCLI11;Server=(localdb)\mssqllocaldb;Database=master;Trusted_Connection=yes;";
         private static ILogger _logger;
 
         [ClassInitialize]

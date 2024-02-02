@@ -19,6 +19,9 @@ namespace SqlToFlatFile
             {
 
                 parsedOptions.Validate();
+                //parse the parsedOptions.DatabaseType string to the enum value
+                var dbType = (DatabaseType)Enum.Parse(typeof(DatabaseType), parsedOptions.DatabaseType, true);
+
 
                 LogCommandLineArgs(parsedOptions);
                 var writerParams = new DataWriterParameters
@@ -31,7 +34,8 @@ namespace SqlToFlatFile
                     TextEnclosure = parsedOptions.TextEnclosure,
                     WriteColNamesAsHeader = parsedOptions.Header,
                     CommandTimeout = parsedOptions.CommandTimeout,
-                    SuppressEmptyFile = parsedOptions.SuppressEmptyFile
+                    SuppressEmptyFile = parsedOptions.SuppressEmptyFile,
+                    DatabaseType = dbType
                 };
 
                 var dataWriter = new DataWriter(_logger, writerParams);

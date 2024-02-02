@@ -13,7 +13,7 @@ namespace TestSqlToFlatFileCore
     public class TestWriteFileSqlServer
     {
         private string _connectionString =
-            @"Server=(localdb)\Projectsv13;Database=master;Trusted_Connection=True;";
+            @"Server=(localdb)\mssqllocaldb;Database=master;Trusted_Connection=True;";
         private static ILogger _logger;
 
         [ClassInitialize]

@@ -1,13 +1,10 @@
-﻿using System;
-using System.Text;
+﻿using System.Text;
 using CommandLine;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Core;
 using Serilog.Events;
-using ILogger = Serilog.ILogger;
 
 namespace SqlToFlatFile
 {

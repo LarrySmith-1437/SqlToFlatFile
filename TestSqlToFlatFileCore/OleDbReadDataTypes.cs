@@ -10,7 +10,7 @@ namespace TestSqlToFlatFileCore
     public class OleDbReadDataTypes
     {
         private static string _connectionString =
-            @"Provider=SQLNCLI11;Server=(localdb)\Projectsv13;Database=master;Trusted_Connection=yes;";
+            @"Provider=SQLNCLI11;Server=(localdb)\mssqllocaldb;Database=master;Trusted_Connection=yes;";
 
         private static IDataReader _reader;
         private static DataWriter _dataWriter;

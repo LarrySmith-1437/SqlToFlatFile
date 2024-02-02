@@ -42,11 +42,20 @@ namespace SqlToFlatFile
         [Option('e', longName: "SuppressEmptyFile", HelpText = "Suppress output file if query has no results", Required = false, Default = false)]
         public bool SuppressEmptyFile { get; set; }
 
+        [Value(9)]
+        [Option('d', longName: "DatabaseType", HelpText = "SqlServer (default), OleDb, or Odbc", Required = false, Default = "SqlServer")]
+        public string DatabaseType { get; set; }
+
         public void Validate()
         {
             if (InlineQuery == "" && QueryFile == "")
             {
                 throw new ArgumentException("Either InlineQuery or QueryFile must be provided");
+            }
+
+            if (DatabaseType != "SqlServer" && DatabaseType != "OleDb" && DatabaseType != "Odbc")
+            {
+                throw new ArgumentException("DatabaseType must be one of SqlServer, OleDb, or Odbc");
             }
         }
     }

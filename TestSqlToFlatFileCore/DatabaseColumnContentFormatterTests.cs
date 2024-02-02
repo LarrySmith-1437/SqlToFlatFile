@@ -10,7 +10,7 @@ namespace TestSqlToFlatFileCore
     {
 
         private static string _connectionString =
-            @"Provider=MSDASQL;Driver={Sql Server Native Client 11.0};Server=(localdb)\Projectsv13;Database=master;Trusted_Connection=yes;";
+            @"Provider=MSDASQL;Driver={Sql Server Native Client 11.0};Server=(localdb)\mssqllocaldb;Database=master;Trusted_Connection=yes;";
 
 
         [ClassInitialize]
