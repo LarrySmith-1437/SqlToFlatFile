@@ -8,6 +8,9 @@ using Microsoft.Extensions.Logging;
 
 namespace SqlToFlatFileLib
 {
+    /// <summary>
+    /// This is the central class for writing data from a database to a flat file.
+    /// </summary>
     public class DataWriter : IDataWriter
     {
         private ILogger _logger;
